@@ -1,0 +1,22 @@
+{
+  "name": "coins-vue-data-table",
+  "version": "1.0.0",
+  "description": "A Vue.js data table component for COINS",
+  "main": "CoinsDataTable.vue",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MRN-Code/coins-vue-data-table.git"
+  },
+  "keywords": [
+    "vue",
+    "data",
+    "table",
+    "coins"
+  ],
+  "author": "Matt Stone",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/MRN-Code/coins-vue-data-table/issues"
+  },
+  "homepage": "https://github.com/MRN-Code/coins-vue-data-table#readme"
+}
