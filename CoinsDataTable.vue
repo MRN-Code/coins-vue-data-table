@@ -221,17 +221,27 @@
 
         methods: {
             renderCell(row, data) {
+                if (!data) return '';
+
                 // Prioritize function types
                 if (typeof data === 'function') {
                     return data(row)
                 }
 
-                // Booleans default to true -> Yes / false-> No
-                if (typeof row[data] === 'boolean') {
-                    return row[data] ? 'Yes' : 'No';
+                // Parse nested properties
+                const keys = data.split('.');
+                data = row[keys[0]];
+
+                for (let i = 1; i < keys.length; i++) {
+                    data = data[keys[i]];
                 }
 
-                return row[data];
+                // Booleans default to true -> Yes / false-> No
+                if (typeof data === 'boolean') {
+                    return data ? 'Yes' : 'No';
+                }
+
+                return data;
             },
             updateSort(column) {
                 this.columns.forEach((aColumn) => {
@@ -403,6 +413,6 @@
     @keyframes spin {
         0% { transform: rotate(0deg); }
         100% { transform: rotate(360deg); }
-    }    
+    }
 }
 </style>
