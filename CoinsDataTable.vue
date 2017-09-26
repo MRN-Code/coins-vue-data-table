@@ -199,33 +199,41 @@
         watch: {
             pages(pages) {
                 this.page = Math.max(Math.min(this.page, pages), 1);
+            },
+
+            dataSource(dataSource) {
+                this.getTableData();
             }
         },
 
         mounted() {
-            if (this.dataSource instanceof Array) {
-                this.data = this.dataSource;
-                this.loading = false;
-                return;
-            }
-
-            // URL (string) given
-            axios.get(this.dataSource)
-                .then(({ data: { data } }) => { this.data = data; this.loading = false; })
-                .catch(() => { alert('There was an error getting the table data.'); });
-
-            this.columns.forEach((column) => {
-                this.visibleColumnNames.push(column.name);
-            });
+            this.getTableData();
         },
 
         methods: {
+            getTableData() {
+                if (this.dataSource instanceof Array) {
+                    this.data = this.dataSource;
+                    this.loading = false;
+                    return;
+                }
+
+                // URL (string) given
+                axios.get(this.dataSource)
+                    .then(({ data: { data } }) => { this.data = data; this.loading = false; })
+                    .catch(() => { alert('There was an error getting the table data.'); });
+
+                this.columns.forEach((column) => {
+                    this.visibleColumnNames.push(column.name);
+                });
+            },
+
             renderCell(row, data) {
                 if (!data) return '';
 
                 // Prioritize function types
                 if (typeof data === 'function') {
-                    return data(row)
+                    return data(row);
                 }
 
                 // Parse nested properties
@@ -241,7 +249,15 @@
                     return data ? 'Yes' : 'No';
                 }
 
-                return data;
+                if (typeof data === 'array') {
+                    return data.join(', ');
+                }
+
+                if (!data) {
+                    return '';
+                }
+
+                return data.toString();
             },
             updateSort(column) {
                 this.columns.forEach((aColumn) => {
