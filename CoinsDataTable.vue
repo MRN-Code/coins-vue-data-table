@@ -24,17 +24,23 @@
     <table id="coins-data-table">
       <thead>
         <tr>
+          <th v-if="checkboxes" class="a-checkbox">
+            <label><input type="checkbox" v-model="allChecked"></label>
+          </th>
           <th v-for="column in visibleColumns" @click="updateSort(column)">
-            {{ column.name }}
-            <div class="coins-data-table-sort-icon right"
+            <span class="header-title">{{ column.name }}</span>
+            <span v-if="!column.noSort" class="coins-data-table-sort-icon"
                  :class="{ asc: column.sort === 'asc', desc: column.sort === 'desc' }">
-            </div>
+            </span>
           </th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="row in displayedRows">
-          <td v-for="column in visibleColumns">{{ renderCell(row, column.data) }}</td>
+          <td v-if="checkboxes" class="a-checkbox">
+            <label><input type="checkbox" v-model="row.checked"></label>
+          </td>
+          <td v-for="column in visibleColumns" v-html="renderCell(row, column.data)"></td>
         </tr>
       </tbody>
     </table>
@@ -78,6 +84,10 @@
                 type: Array,
                 required: true
             },
+            checkboxes: {
+                type: Boolean,
+                default: false
+            },
 
             // Pagination
             rowsPerPage: {
@@ -116,7 +126,8 @@
                 loading: true,
                 sort: null,
                 columnFilter: false,
-                visibleColumnNames: []
+                visibleColumnNames: [],
+                allChecked: false
             }
         },
 
@@ -200,9 +211,13 @@
             pages(pages) {
                 this.page = Math.max(Math.min(this.page, pages), 1);
             },
-
             dataSource(dataSource) {
                 this.getTableData();
+            },
+            allChecked(allChecked) {
+                this.data.forEach((row) => {
+                    row.checked = allChecked;
+                });
             }
         },
 
@@ -260,6 +275,8 @@
                 return data.toString();
             },
             updateSort(column) {
+                if (column.noSort) return;
+
                 this.columns.forEach((aColumn) => {
                     if (aColumn === column) {
                         if (!aColumn.sort || aColumn.sort === 'desc') {
@@ -277,6 +294,9 @@
                 } else {
                     this.sort = null;
                 }
+            },
+            toggleAllCheckboxes() {
+
             }
         }
     }
@@ -337,6 +357,8 @@
 
                 cursor: pointer;
 
+                white-space: nowrap;
+
                 .coins-data-table-sort-icon {
                     margin: 5px;
                     border: 5px transparent solid;
@@ -354,6 +376,11 @@
             td {
                 border: 1px grey solid;
                 padding: 3px;
+            }
+
+            .a-checkbox label {
+                padding-left: 10px;
+                padding-right: 10px;
             }
         }
     }

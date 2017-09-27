@@ -18,6 +18,9 @@ An array of the table columns an their parameters. Possible values:
 
 Note: By default boolean table values are converted to Yes/No for `true`/`false` respectively. This behavior can be overwritten with the function `data` data type.
 
+##### `checkboxes` (boolean) [ false ]
+When enabled, the first column of the table will contain checkbox inputs.
+
 ### Pagination
 
 ##### `rowsPerPage` (integer) [ 20 ]
