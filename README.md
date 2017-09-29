@@ -42,3 +42,12 @@ Whether or not the column selector button should be visible
 
 ##### `filter` ( boolean ) [ `true` ]
 Whether or not the filter should be visible
+
+##### `buttons` ( array )
+An Array of button objects that will be listed next to the other table buttons. The format for the buttons is as follows:
+```
+{
+    title: 'Title displayed on button',
+    click: (checked rows or all rows if checkboxes are disabled) => { ... }
+}
+```

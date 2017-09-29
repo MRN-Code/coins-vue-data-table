@@ -15,6 +15,8 @@
         </div>
       </transition>
 
+      <button v-for="button in buttons" @click="button.click(getCheckedRows())">{{ button.title }}</button>
+
       <label v-if="filter" class="coins-data-table-filter">
         Filter:&nbsp
         <input v-model="filterText"></input>
@@ -111,6 +113,9 @@
             columnsButton: {
                 type: Boolean,
                 default: true
+            },
+            buttons: {
+                type: Array
             },
             filter: {
                 type: Boolean,
@@ -227,6 +232,8 @@
 
         methods: {
             getTableData() {
+                this.loading = true;
+
                 if (this.dataSource instanceof Array) {
                     this.data = this.dataSource;
                     this.loading = false;
@@ -295,9 +302,14 @@
                     this.sort = null;
                 }
             },
-            toggleAllCheckboxes() {
+            getCheckedRows() {
+                if (!this.checkboxes) return this.data;
 
+                return this.data.filter((row) => {
+                    return row.checked;
+                });
             }
+
         }
     }
 </script>
@@ -358,6 +370,8 @@
                 cursor: pointer;
 
                 white-space: nowrap;
+
+                font-size: smaller;
 
                 .coins-data-table-sort-icon {
                     margin: 5px;
