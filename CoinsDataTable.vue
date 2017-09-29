@@ -31,7 +31,7 @@
           </th>
           <th v-for="column in visibleColumns" @click="updateSort(column)">
             <span class="header-title">{{ column.name }}</span>
-            <span v-if="!column.noSort" class="coins-data-table-sort-icon"
+            <span v-if="column.type !== 'button'" class="coins-data-table-sort-icon"
                  :class="{ asc: column.sort === 'asc', desc: column.sort === 'desc' }">
             </span>
           </th>
@@ -152,7 +152,7 @@
                 } else {
                     filtered = this.data.filter((row) => {
                         return this.columns.some((column) => {
-                            if (this.renderCell(row, column.data)) {
+                            if (column.type !== 'button' && this.renderCell(row, column.data)) {
                                 return this.renderCell(row, column.data).toLowerCase()
                                     .indexOf(this.filterText.toLowerCase()) !== -1;
                             } else {
@@ -287,7 +287,7 @@
                 return data.toString();
             },
             updateSort(column) {
-                if (column.noSort) return;
+                if (column.type === 'button') return;
 
                 this.columns.forEach((aColumn) => {
                     if (aColumn === column) {
