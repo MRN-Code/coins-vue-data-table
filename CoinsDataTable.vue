@@ -42,7 +42,12 @@
           <td v-if="checkboxes" class="a-checkbox">
             <label><input type="checkbox" v-model="row.checked"></label>
           </td>
-          <td v-for="column in visibleColumns" v-html="renderCell(row, column.data)"></td>
+          <td v-for="column in visibleColumns" v-if="column.type !== 'button'">{{ renderCell(row, column.data) }}</td>
+          <td v-for="column in visibleColumns" v-if="column.type === 'button'">
+            <div class="pad">
+              <span class="button" :class="column.data.class" @click="column.data.click(row)">{{ column.data.title }}</span>
+            </div>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -390,6 +395,10 @@
             td {
                 border: 1px grey solid;
                 padding: 3px;
+
+                div.pad {
+                    padding: 5px 5px 5px 5px;
+                }
             }
 
             .a-checkbox label {

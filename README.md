@@ -13,7 +13,9 @@ An array of the table columns an their parameters. Possible values:
 - `name` Name displayed on table
 - `data` (string) Key referenced in data
 - `data` (function) A function determines column render. It is passed the data row.
-- `type` Currently the only supported option is 'numeric'. This facilitates accurate sorting. By default sorting uses String's `localeCompare` function.
+- `type` There are two options here:
+    - 'numeric'. This facilitates accurate sorting. By default sorting uses String's `localeCompare` function.
+    - 'button' A button object with possible title, class and click properties
 - `visible` Whether or not a column should be initially visible
 
 Note: By default boolean table values are converted to Yes/No for `true`/`false` respectively. This behavior can be overwritten with the function `data` data type.

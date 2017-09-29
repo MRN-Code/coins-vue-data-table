@@ -1,6 +1,6 @@
 {
   "name": "coins-vue-data-table",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "A Vue.js data table component for COINS",
   "main": "CoinsDataTable.vue",
   "repository": {
