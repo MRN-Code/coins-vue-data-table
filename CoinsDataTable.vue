@@ -232,6 +232,10 @@
         },
 
         mounted() {
+            this.columns.forEach((column) => {
+                this.visibleColumnNames.push(column.name);
+            });
+
             this.getTableData();
         },
 
@@ -250,9 +254,6 @@
                     .then(({ data: { data } }) => { this.data = data; this.loading = false; })
                     .catch(() => { alert('There was an error getting the table data.'); });
 
-                this.columns.forEach((column) => {
-                    this.visibleColumnNames.push(column.name);
-                });
             },
 
             renderCell(row, data) {
@@ -260,7 +261,7 @@
 
                 // Prioritize function types
                 if (typeof data === 'function') {
-                    return data(row);
+                    return data(row).toString();
                 }
 
                 // Parse nested properties
