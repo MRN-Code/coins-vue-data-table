@@ -223,6 +223,10 @@
             },
             dataSource(dataSource) {
                 this.getTableData();
+
+                this.columns.forEach((column) => {
+                    this.visibleColumnNames.push(column.name);
+                });
             },
             allChecked(allChecked) {
                 this.data.forEach((row) => {
