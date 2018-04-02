@@ -1,7 +1,7 @@
 <template>
   <div class="coins-data-table-container">
     <div v-show="!loading" class="coins-data-table-controls">
-      <button v-if="exportButton">Export CSV</button>
+      <button v-if="exportButton" @click="exportCSV">Export CSV</button>
 
       <button v-if="columnsButton" @click="columnFilter = !columnFilter">Columns</button>
       <transition name="fade">
@@ -257,7 +257,6 @@
                 axios.get(this.dataSource)
                     .then(({ data: { data } }) => { this.data = data; this.loading = false; })
                     .catch(() => { alert('There was an error getting the table data.'); });
-
             },
 
             renderCell(row, data) {
@@ -318,8 +317,42 @@
                 return this.data.filter((row) => {
                     return row.checked;
                 });
-            }
+            },
 
+            exportCSV() {
+                let csv = [];
+                let headerRow = [];
+
+                this.filteredRows.forEach((row, index) => {
+                    let csvRow = [];
+
+                    this.visibleColumns.forEach((column) => {
+                        if (column.type !== 'button') {
+                            if (index === 0) {
+                                headerRow.push(column.name);
+                            }
+
+                            csvRow.push(this.renderCell(row, column.data));
+                        }
+                    });
+
+                    csv.push(csvRow);
+                });
+
+                csv.unshift(headerRow);
+
+                let file = 'data:text/csv;charset=utf-8,';
+                csv.forEach((row) => {
+                    file += encodeURIComponent(row.join(',') + '\r\n');
+                });
+
+                const link = document.createElement('a');
+                link.setAttribute('href', file);
+                link.setAttribute('download', 'csv-export.csv');
+                document.body.appendChild(link);
+                link.click();
+                link.remove();
+            }
         }
     }
 </script>
