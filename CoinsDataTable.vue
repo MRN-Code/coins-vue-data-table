@@ -42,11 +42,19 @@
           <td v-if="checkboxes" class="a-checkbox">
             <label><input type="checkbox" v-model="row.checked"></label>
           </td>
-          <td v-for="column in visibleColumns" v-if="column.type !== 'button'">{{ renderCell(row, column.data) }}</td>
-          <td v-for="column in visibleColumns" v-if="column.type === 'button'">
-            <div class="pad">
-              <span class="button" :class="column.data.class" @click="column.data.click(row)">{{ column.data.title }}</span>
-            </div>
+          <td v-for="column in visibleColumns">
+            <span v-if="column.type === 'button'">
+              <div class="pad">
+                <span class="button" :class="column.data.class(row)" @click="column.data.click(row)">{{ column.data.title }}</span>
+              </div>
+            </span>
+            <span v-else-if="column.type === 'html'" v-html="renderCell(row, column.data)"></span>
+            <span v-else>
+              {{ renderCell(row, column.data) }}
+            </span>
+            <span v-if="column.tooltip" class="tooltip-text">
+              {{ renderCell(row, column.tooltip) }}
+            </span>
           </td>
         </tr>
       </tbody>
@@ -437,6 +445,27 @@
                 div.pad {
                     padding: 5px 5px 5px 5px;
                 }
+
+                .tooltip-text {
+                    opacity: 0;
+                    transition: opacity 1s;
+
+                    background-color: black;
+                    color: #fff;
+
+                    padding: 3px 3px 3px 3px;
+                    margin-left: 2px;
+
+                    border-radius: 5px;
+
+                    position: absolute;
+                    z-index: 1;
+                }
+
+                &:hover .tooltip-text {
+                    opacity: 1;
+                }
+
             }
 
             .a-checkbox label {
