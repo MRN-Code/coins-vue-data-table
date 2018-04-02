@@ -507,7 +507,11 @@
         display: inline-block;
         min-width: 35px;
 
+        border: 2px #0D6995 solid;
+        border-color: transparent;
         border-radius: 5px;
+
+        transition: border-color 200ms linear;
     }
 
     button:focus {
@@ -515,7 +519,7 @@
     }
 
     button:hover {
-        border: 2px #0D6995 solid;
+        border-color: #0D6995;
     }
 
     button.current {
