@@ -289,7 +289,12 @@
                 data = row[keys[0]];
 
                 for (let i = 1; i < keys.length; i++) {
-                    data = data[keys[i]];
+                    if (data !== null && data.hasOwnProperty(keys[i])) {
+                        data = data[keys[i]];
+                    } else {
+                        console.log(keys.join('.') + ' not found');
+                        return '';
+                    }
                 }
 
                 // Booleans default to true -> Yes / false-> No
