@@ -103,6 +103,10 @@
                 type: Boolean,
                 default: false
             },
+            secondarySort: {
+                type: [ Object, Boolean ],
+                default: false
+            },
 
             // Pagination
             rowsPerPage: {
@@ -172,11 +176,18 @@
 
                 // Column sort
                 if (this.sort) {
-                    return filtered.sort((a, b) => {
-                        a = this.renderCell(a, this.sort.name) || '';
-                        b = this.renderCell(b, this.sort.name) || '';
+                    return filtered.sort((rowA, rowB) => {
+                        let a = this.renderCell(rowA, this.sort.name) || '';
+                        let b = this.renderCell(rowB, this.sort.name) || '';
+                        let sortOverride = false;
 
-                        if (this.sort.type === 'numeric') {
+                        if (a === b && this.secondarySort) {
+                            a = this.renderCell(rowA, this.secondarySort.name) || '';
+                            b = this.renderCell(rowB, this.secondarySort.name) || '';
+                            sortOverride = this.secondarySort.type;
+                        }
+
+                        if ((sortOverride && sortOverride === 'numeric') || this.sort.type === 'numeric') {
                             if (this.sort.order === 'asc') {
                                 return a - b;
                             } else {
@@ -254,6 +265,12 @@
         methods: {
             getTableData() {
                 this.loading = true;
+
+                this.columns.forEach((column) => {
+                    if (column.visible !== false) {
+                        this.visibleColumnNames.push(column.name);
+                    }
+                });
 
                 if (this.dataSource instanceof Array) {
                     this.data = this.dataSource;
