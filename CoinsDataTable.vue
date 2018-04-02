@@ -23,7 +23,7 @@
       </label>
     </div>
 
-    <table id="coins-data-table">
+    <table id="coins-data-table" v-show="!loading">
       <thead>
         <tr>
           <th v-if="checkboxes" class="a-checkbox">
@@ -517,8 +517,7 @@
         border-bottom: 4px #0D6995 solid;
     }
 
-    button.disabled {
-        border: 2px white solid;
+    .disabled {
         opacity: .5;
         cursor: default;
     }
